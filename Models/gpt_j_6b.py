@@ -15,9 +15,7 @@ class gpt_j_6B:
 
     def get_payload(self, payload):
         while True:
-            try:
-                print(payload)
-                
+            try:                
                 if len(payload) > 0:
                     input_ids = self.tokenizer(payload, return_tensors="pt").input_ids.to(self.model.device)
 

@@ -3,7 +3,7 @@ import logging
 import random
 from telegram.ext.filters import Filters
 from telegram.ext.messagehandler import MessageHandler
-from settings import BOT_TOKEN
+from settings import BOT_TOKEN, USER_ID
 from telegram import Update
 from telegram.ext import (Updater,
                           PicklePersistence,
@@ -15,10 +15,15 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
 
 from Models.gpt_j_6b import gpt_j_6B
 from time import sleep
+from pdf_reader import Text_Provider
+
+print('Extracting text from PDF...')
+tp = Text_Provider()
+payloads_list = tp.get_payloads()
 
 EXPECT_NAME, EXPECT_BUTTON_CLICK = range(2)
 NUMEXPR_MAX_THREADS = 12
-LIST_OF_ADMINS = [USER_ID]      # Add your USER_ID int
+LIST_OF_ADMINS = [USER_ID]
 gpt = gpt_j_6B()
 
 def restricted(func):
@@ -34,15 +39,23 @@ def restricted(func):
 @restricted
 def start(update: Update, context: CallbackContext):
     ''' Replies to /start command '''
-    update.message.reply_text('just a sec')
+    update.message.reply_text('Initializing...')
+    payloads_count = 0
+
     while True:
         try:
-            reply = gpt.get_payload()
-            update.message.reply_text(reply)
+            payload = payloads_list[payloads_count]
+            reply = gpt.get_payload(payload)
+            update.message.reply_text(f'{payload} {reply}')
             sleep(random.uniform(60.*60, 120.*60))
         except KeyboardInterrupt:
             break
 
+        payloads_count += 1
+
+        if payloads_count == payloads_list.index(payload):
+            payloads_count = 0
+        
     return ConversationHandler.END
 
 if __name__ == "__main__":
