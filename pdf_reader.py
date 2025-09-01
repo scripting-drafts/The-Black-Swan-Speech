@@ -1,4 +1,5 @@
 from pypdf import PdfReader 
+from tqdm import tqdm
 
 class Text_Provider:
     def get_payloads(self):
@@ -10,7 +11,7 @@ class Text_Provider:
         txt = txt.split('\n')
         all_txt = []
 
-        for line in txt:
+        for line in tqdm(txt):
             line = line.strip()
             if line.isupper() == False and line is not int():
                 all_txt.append(line)
