@@ -20,6 +20,7 @@ from pdf_reader import Text_Provider
 print('Extracting text from PDF...')
 tp = Text_Provider()
 payloads_list = tp.get_payloads()
+random.shuffle(payloads_list)
 
 EXPECT_NAME, EXPECT_BUTTON_CLICK = range(2)
 NUMEXPR_MAX_THREADS = 12
@@ -47,7 +48,7 @@ def start(update: Update, context: CallbackContext):
             payload = payloads_list[payloads_count]
             reply = gpt.get_payload(payload)
             update.message.reply_text(f'{payload} {reply}')
-            sleep(random.uniform(60.*60, 120.*60))
+            sleep(random.uniform(7.*60, 13.*60))
         except KeyboardInterrupt:
             break
 
