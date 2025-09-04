@@ -5,7 +5,7 @@ os.environ['NUMEXPR_MAX_THREADS'] = '12'
 
 from functools import wraps
 import logging
-import random
+from random import shuffle, uniform
 from telegram.ext.filters import Filters
 from telegram.ext.messagehandler import MessageHandler
 from settings import BOT_TOKEN, USER_ID
@@ -25,7 +25,7 @@ from pdf_reader import Text_Provider
 print('Extracting text from PDF...')
 tp = Text_Provider()
 payloads_list = tp.get_payloads()
-random.shuffle(payloads_list)
+shuffle(payloads_list)
 
 LIST_OF_ADMINS = [USER_ID]
 gpt = gpt_j_6B()
@@ -51,7 +51,7 @@ def start(update: Update, context: CallbackContext):
             payload = payloads_list[payloads_count]
             reply = gpt.get_payload(payload)
             update.message.reply_text(f'{payload} {reply}')
-            sleep(random.uniform(7.*60, 13.*60))
+            sleep(uniform(7.*60, 13.*60))
         except KeyboardInterrupt:
             break
 
