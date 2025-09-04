@@ -3,6 +3,7 @@ Models/dialo_gpt.py
 Models/godel.py
 Models/pegasus_summarizer.py
 Models/sentiment.py
+Models/__pycache__
 zdeprecated
 data_handler.py
 sip_client.py
@@ -10,3 +11,5 @@ ThreadR.py
 Files
 settings.py
 mybot*
+stability_ai
+__pycache__
