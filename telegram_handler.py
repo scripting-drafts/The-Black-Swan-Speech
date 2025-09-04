@@ -1,3 +1,8 @@
+import os
+import sys
+
+os.environ['NUMEXPR_MAX_THREADS'] = '12'
+
 from functools import wraps
 import logging
 import random
