@@ -57,7 +57,7 @@ def start(update: Update, context: CallbackContext):
             payload = payloads_list[payloads_count]
             reply = gpt.get_payload(payload)
             update.message.reply_text(f'{payload} {reply}')
-            sleep(uniform(7.*60, 13.*60))
+            sleep(uniform(5.*60, 7.*60))
         except KeyboardInterrupt:
             break
 

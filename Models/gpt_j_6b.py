@@ -40,7 +40,8 @@ class gpt_j_6B:
             model_id, 
             torch_dtype=torch.float16, 
             device_map="auto",
-            max_memory=max_memory
+            max_memory={0: "8.25GB"},
+            offload_folder="./offload"
         )
         print(f"model is loaded on device {self.model.device.type} with 75% memory allocation")
 
