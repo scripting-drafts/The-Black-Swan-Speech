@@ -22,6 +22,12 @@ from Models.gpt_j_6b import gpt_j_6B
 from time import sleep
 from pdf_reader import Text_Provider
 
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                level=logging.INFO)
+
+logging.getLogger("telegram.vendor.ptb_urllib3.urllib3").setLevel(logging.ERROR)
+logger = logging.getLogger(__name__)
+
 print('Extracting text from PDF...')
 tp = Text_Provider()
 payloads_list = tp.get_payloads()

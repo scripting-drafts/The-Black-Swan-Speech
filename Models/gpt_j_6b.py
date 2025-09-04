@@ -1,5 +1,15 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
+import warnings
+import os
+
+# Set environment variable to suppress warnings
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+# Suppress specific tokenizer warnings
+warnings.filterwarnings("ignore", message="Using pad_token, but it is not set yet")
+warnings.filterwarnings("ignore", message=".*pad_token.*", category=UserWarning)
+warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
 
 class gpt_j_6B:
     def __init__(self):
@@ -7,11 +17,20 @@ class gpt_j_6B:
         model_id = "philschmid/gpt-j-6B-fp16-sharded"
 
         # Load Model and Tokenizer
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id)
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            model_id,
+            pad_token='<|endoftext|>',
+            padding_side='left'
+        )
         
-        # Set pad token if not already set
+        # Ensure pad token is properly set
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
+        if self.tokenizer.pad_token_id is None:
+            self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
+            
+        # Print confirmation
+        print(f"Pad token set to: {self.tokenizer.pad_token} (ID: {self.tokenizer.pad_token_id})")
 
         # we use device_map auto to automatically place all shards on the GPU to save CPU memory
         self.model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float16, device_map="auto")
