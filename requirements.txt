@@ -1,0 +1,8 @@
+# Telegram Bot Framework
+python-telegram-bot>=13.0,<14.0
+torch>=2.0.0
+transformers>=4.20.0
+accelerate>=0.20.0
+pypdf>=3.0.0
+tqdm>=4.64.0
+numexpr>=2.8.0

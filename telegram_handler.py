@@ -27,8 +27,6 @@ tp = Text_Provider()
 payloads_list = tp.get_payloads()
 random.shuffle(payloads_list)
 
-EXPECT_NAME, EXPECT_BUTTON_CLICK = range(2)
-NUMEXPR_MAX_THREADS = 12
 LIST_OF_ADMINS = [USER_ID]
 gpt = gpt_j_6B()
 
