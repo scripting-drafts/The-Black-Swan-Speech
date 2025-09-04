@@ -32,9 +32,17 @@ class gpt_j_6B:
         # Print confirmation
         print(f"Pad token set to: {self.tokenizer.pad_token} (ID: {self.tokenizer.pad_token_id})")
 
+        # Configure memory allocation - use 75% of GPU memory instead of default 90%
+        max_memory = {0: "75%"}  # Device 0 uses 75% of memory
+        
         # we use device_map auto to automatically place all shards on the GPU to save CPU memory
-        self.model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float16, device_map="auto")
-        print(f"model is loaded on device {self.model.device.type}")
+        self.model = AutoModelForCausalLM.from_pretrained(
+            model_id, 
+            torch_dtype=torch.float16, 
+            device_map="auto",
+            max_memory=max_memory
+        )
+        print(f"model is loaded on device {self.model.device.type} with 75% memory allocation")
 
     def get_payload(self, payload, **kwargs):
         while True:
