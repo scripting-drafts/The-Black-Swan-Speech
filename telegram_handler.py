@@ -31,7 +31,7 @@ bot_should_restart = False
 def restart_timer():
     """Timer function to restart the bot every 8 hours"""
     global bot_should_restart
-    print("Restart timer started - bot will restart in 8 hours")
+    print("Restart timer started - bot will restart in 6 hours")
     time.sleep(6 * 60 * 60)  # 8 hours in seconds
     print("8 hours elapsed - scheduling bot restart...")
     bot_should_restart = True
