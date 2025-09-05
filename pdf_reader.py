@@ -8,7 +8,17 @@ class Text_Provider:
         reader = PdfReader('Taleb Nassim - The Black Swan.pdf') 
         pages = reader.pages[20:] 
 
-        txt = ''.join([page.extract_text() for page in pages])
+        # Extract text with error handling for problematic pages
+        page_texts = []
+        for i, page in enumerate(pages):
+            try:
+                text = page.extract_text()
+                page_texts.append(text)
+            except (TypeError, ValueError, Exception) as e:
+                print(f"Warning: Skipping page {i+21} due to extraction error: {e}")
+                continue
+        
+        txt = ''.join(page_texts)
         sentences = self._extract_sentences(txt)
         filtered_sentences = self._filter_sentences(sentences)
         
